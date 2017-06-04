@@ -21,6 +21,9 @@ class HaveCakeProblem(Problem):
         self.actions_list = self.get_actions()
 
     def get_actions(self):
+        """
+        actions for this domain
+        """
         precond_pos = [expr("Have(Cake)")]
         precond_neg = []
         effect_add = [expr("Eaten(Cake)")]
