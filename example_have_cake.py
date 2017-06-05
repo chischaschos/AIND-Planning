@@ -12,6 +12,7 @@ from my_planning_graph import PlanningGraph
 from run_search import run_search
 
 from functools import lru_cache
+import pdb
 
 
 class HaveCakeProblem(Problem):
@@ -43,6 +44,7 @@ class HaveCakeProblem(Problem):
     def actions(self, state: str) -> list:  # of Action
         possible_actions = []
         kb = PropKB()
+        # pdb.set_trace()
         kb.tell(decode_state(state, self.state_map).pos_sentence())
         for action in self.actions_list:
             is_possible = True
