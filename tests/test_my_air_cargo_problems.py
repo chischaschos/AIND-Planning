@@ -10,6 +10,7 @@ from lp_utils import decode_state
 from my_air_cargo_problems import (
     air_cargo_p1, air_cargo_p2, air_cargo_p3,
 )
+import pdb
 
 class TestAirCargoProb1(unittest.TestCase):
 
@@ -66,9 +67,9 @@ class TestAirCargoMethods(unittest.TestCase):
 
     def test_AC_actions(self):
         # to see list of possible actions, uncomment below
-        print("\npossible actions:")
-        for action in self.p1.actions(self.p1.initial):
-            print("{}{}".format(action.name, action.args))
+        # print("\npossible actions:")
+        # for action in self.p1.actions(self.p1.initial):
+        #     print("{}{}".format(action.name, action.args))
         self.assertEqual(len(self.p1.actions(self.p1.initial)), 4)
 
     def test_AC_result(self):

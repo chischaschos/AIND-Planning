@@ -11,6 +11,7 @@ from my_planning_graph import PlanningGraph
 
 from functools import lru_cache
 
+import pdb
 
 class AirCargoProblem(Problem):
     def __init__(self, cargos, planes, airports, initial: FluentState, goal: list):
@@ -71,9 +72,6 @@ class AirCargoProblem(Problem):
                         precond_pos = [
                                 expr("At({}, {})".format(cargo, airport)),
                                 expr("At({}, {})".format(plane, airport)),
-                                expr("Cargo({})".format(cargo)),
-                                expr("Plane({})".format(plane)),
-                                expr("Airport({})".format(airport))
                                 ]
                         precond_neg = []
                         effect_add = [expr("In({}, {})".format(cargo, plane))]
@@ -100,9 +98,6 @@ class AirCargoProblem(Problem):
                         precond_pos = [
                                 expr("In({}, {})".format(cargo, plane)),
                                 expr("At({}, {})".format(plane, airport)),
-                                expr("Cargo({})".format(cargo)),
-                                expr("Plane({})".format(plane)),
-                                expr("Airport({})".format(airport))
                                 ]
                         precond_neg = []
                         effect_add = [expr("At({}, {})".format(cargo, airport))]
@@ -148,6 +143,7 @@ class AirCargoProblem(Problem):
         kb = PropKB()
         kb.tell(decode_state(state, self.state_map).pos_sentence())
         for action in self.actions_list:
+            # pdb.set_trace()
             is_possible = True
             for clause in action.precond_pos:
                 if clause not in kb.clauses:
@@ -230,7 +226,14 @@ def air_cargo_p1() -> AirCargoProblem:
     cargos = ['C1', 'C2']
     planes = ['P1', 'P2']
     airports = ['JFK', 'SFO']
-    pos = [expr('At(C1, SFO)'),
+    pos = [
+            # expr('Cargo(C1)'),
+           # expr('Cargo(C2)'),
+           # expr('Plane(P1)'),
+           # expr('Plane(P2)'),
+           # expr('Airport(JFK)'),
+           # expr('Airport(SFO)'),
+           expr('At(C1, SFO)'),
            expr('At(C2, JFK)'),
            expr('At(P1, SFO)'),
            expr('At(P2, JFK)'),
