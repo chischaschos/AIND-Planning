@@ -11,7 +11,7 @@ from my_planning_graph import PlanningGraph
 
 from functools import lru_cache
 
-import pdb
+# import pdb
 
 class AirCargoProblem(Problem):
     def __init__(self, cargos, planes, airports, initial: FluentState, goal: list):
@@ -143,7 +143,6 @@ class AirCargoProblem(Problem):
         kb = PropKB()
         kb.tell(decode_state(state, self.state_map).pos_sentence())
         for action in self.actions_list:
-            # pdb.set_trace()
             is_possible = True
             for clause in action.precond_pos:
                 if clause not in kb.clauses:
@@ -166,18 +165,25 @@ class AirCargoProblem(Problem):
         """
         new_state = FluentState([], [])
         old_state = decode_state(state, self.state_map)
+
+        # maintain positive fluents non removed by the action
         for fluent in old_state.pos:
             if fluent not in action.effect_rem:
                 new_state.pos.append(fluent)
+
+        # the action adds positive fluents
         for fluent in action.effect_add:
             if fluent not in new_state.pos:
                 new_state.pos.append(fluent)
+
         for fluent in old_state.neg:
             if fluent not in action.effect_add:
                 new_state.neg.append(fluent)
+
         for fluent in action.effect_rem:
             if fluent not in new_state.neg:
                 new_state.neg.append(fluent)
+
         return encode_state(new_state, self.state_map)
 
     def goal_test(self, state: str) -> bool:
@@ -217,9 +223,21 @@ class AirCargoProblem(Problem):
         conditions by ignoring the preconditions required for an action to be
         executed.
         """
-        # TODO implement (see Russell-Norvig Ed-3 10.2.3  or Russell-Norvig Ed-2 11.2)
-        count = 0
-        return count
+        return max(
+                map(
+                    lambda action: self.get_state_no_preconditions(action, node),
+                    self.actions_list
+                    )
+                )
+
+    def get_state_no_preconditions(self, action, node):
+        state = decode_state(self.result(node.state, action), self.state_map)
+
+        goals = 0
+        for clause in self.goal:
+            if clause not in state.pos:
+               goals += 1
+        return goals
 
 
 def air_cargo_p1() -> AirCargoProblem:
@@ -227,12 +245,6 @@ def air_cargo_p1() -> AirCargoProblem:
     planes = ['P1', 'P2']
     airports = ['JFK', 'SFO']
     pos = [
-            # expr('Cargo(C1)'),
-           # expr('Cargo(C2)'),
-           # expr('Plane(P1)'),
-           # expr('Plane(P2)'),
-           # expr('Airport(JFK)'),
-           # expr('Airport(SFO)'),
            expr('At(C1, SFO)'),
            expr('At(C2, JFK)'),
            expr('At(P1, SFO)'),
