@@ -11,6 +11,7 @@ from my_planning_graph import (
     PlanningGraph, PgNode_a, PgNode_s, mutexify
 )
 
+import pdb
 
 class TestPlanningGraphLevels(unittest.TestCase):
     def setUp(self):
@@ -73,6 +74,7 @@ class TestPlanningGraphMutex(unittest.TestCase):
                          "Non-Canceling effects incorrectly marked as mutex")
 
     def test_interference_mutex(self):
+        # pdb.set_trace()
         self.assertTrue(PlanningGraph.interference_mutex(self.pg, self.na4, self.na5),
                         "Precondition from one node opposite of effect of other node should be mutex")
         self.assertTrue(PlanningGraph.interference_mutex(self.pg, self.na5, self.na4),
@@ -84,6 +86,7 @@ class TestPlanningGraphMutex(unittest.TestCase):
         self.assertFalse(PlanningGraph.competing_needs_mutex(self.pg, self.na1, self.na2),
                          "Non-competing action nodes incorrectly marked as mutex")
         mutexify(self.ns3, self.ns4)
+        # pdb.set_trace()
         self.assertTrue(PlanningGraph.competing_needs_mutex(self.pg, self.na1, self.na2),
                         "Opposite preconditions from two action nodes not marked as mutex")
 
