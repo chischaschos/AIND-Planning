@@ -1,3 +1,4 @@
+from copy import copy
 from aimacode.planning import Action
 from aimacode.search import Problem
 from aimacode.utils import expr
@@ -540,7 +541,7 @@ class PlanningGraph():
         # for each goal in the problem, determine the level cost, then add them together
         level_sum = 0
 
-        goals = self.problem.goal
+        goals = copy(self.problem.goal)
 
         while goals:
             goal = goals.pop()

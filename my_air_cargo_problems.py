@@ -11,7 +11,7 @@ from my_planning_graph import PlanningGraph
 
 from functools import lru_cache
 
-# import pdb
+import pdb
 
 class AirCargoProblem(Problem):
     def __init__(self, cargos, planes, airports, initial: FluentState, goal: list):
@@ -223,21 +223,15 @@ class AirCargoProblem(Problem):
         conditions by ignoring the preconditions required for an action to be
         executed.
         """
-        return max(
-                map(
-                    lambda action: self.get_state_no_preconditions(action, node),
-                    self.actions_list
-                    )
-                )
-
-    def get_state_no_preconditions(self, action, node):
-        state = decode_state(self.result(node.state, action), self.state_map)
+        expr_list = decode_state(node.state, self.state_map).pos
 
         goals = 0
         for clause in self.goal:
-            if clause not in state.pos:
-               goals += 1
-        return goals
+            if clause in expr_list:
+                goals += 1
+                continue
+
+        return len(self.goal) - goals
 
 
 def air_cargo_p1() -> AirCargoProblem:

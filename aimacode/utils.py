@@ -603,6 +603,7 @@ class PriorityQueue(Queue):
         self._A[item] -= 1
         return item
 
+    def __contains__(self, item):
         return self._A[item] > 0
 
     def __getitem__(self, key):
